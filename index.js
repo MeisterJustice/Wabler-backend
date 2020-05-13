@@ -15,6 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded())
 
+
 // all my routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users/:id/messages', isAuthenticated, isAuthorized, messagesRoutes);
@@ -27,7 +28,7 @@ app.get('/api/messages', isAuthenticated, async (req, res, next) => {
         });
         return res.status(200).json(messages);
     } catch (err) {
-        return next(err)
+        return next(err);
     }
 })
 
