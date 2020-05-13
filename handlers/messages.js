@@ -21,7 +21,16 @@ exports.createMessage = async (req, res, next) => {
 
 exports.getMessage = async (req, res, next) => {
     try {
-        let message = await db.Message.find(req.params.message_id);
+        let message = await db.Message.findById(req.params.message_id);
+        return res.status(200).json(message);
+    } catch(err){
+        return next(err);
+    }
+}
+
+exports.putMessage = async (req, res, next) => {
+    try {
+        let message = await db.Message.findByIdAndUpdate(req.params.message_id, req.body);
         return res.status(200).json(message);
     } catch(err){
         return next(err);

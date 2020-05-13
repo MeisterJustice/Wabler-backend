@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-const { createMessage, getMessage, deleteMessage } = require('../handlers/messages');
+const { createMessage, getMessage, deleteMessage, putMessage } = require('../handlers/messages');
+const { isAuthenticated, isAuthorized, } = require('../middleware/auth')
 
 router
     .route('/').post(createMessage);
@@ -8,6 +9,7 @@ router
 router
     .route('/:message_id')
     .get(getMessage)
-    .delete(deleteMessage)
+    .put(isAuthenticated, isAuthorized, putMessage)
+    .delete(isAuthenticated, isAuthorized, deleteMessage)
 
 module.exports = router;

@@ -63,3 +63,42 @@ exports.signup = async (req, res, next) => {
         })
     }
 }
+
+exports.putUser = async (req, res, next) => {
+    try {
+        let filter = {
+            _id: req.params.id
+        }
+        let update = {
+            email: req.body.email,
+            username: req.body.username,
+            profileImageUrl: req.body.profileImageUrl
+        }
+        let user = await db.User.findOneAndUpdate(filter, update, {
+            new: true,
+        })
+        let { id, username, profileImageUrl } = user;
+        let token = jwt.sign({
+            id,
+            username,
+            profileImageUrl
+        },
+            process.env.SECRET_KEY
+        );
+        return res.status(200).json({
+            id,
+            username, 
+            profileImageUrl,
+            token
+        })
+    } catch (err) {
+        // if a validation fails
+        if(err.code === 11000){
+            err.message = 'Sorry, that username or email is taken';
+        }
+        return next({
+            status: 400,
+            message: err.message
+        })
+    }
+}

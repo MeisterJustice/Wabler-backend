@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded())
 
 // all my routes
 app.use('/api/auth', authRoutes);
-app.use('/api/users/:id/messages', isAuthenticated, isAuthorized, messagesRoutes);
+app.use('/api/users/:id/messages', messagesRoutes);
 
 app.get('/api/messages', isAuthenticated, async (req, res, next) => {
     try {
